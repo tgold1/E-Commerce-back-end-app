@@ -45,11 +45,11 @@ router.post('/', async (req, res) => {
   // create a new category
 });
 
-router.put('/:category_id', (req, res) => {
-  Category.update(
+router.put('/:id', (req, res) => {
+  Category.update(req.body,
     {
       where: {
-        category_id: req.params.category_id,
+        id: req.params.id,
       },
     }
   )
@@ -63,10 +63,10 @@ router.put('/:category_id', (req, res) => {
   // update a category by its `id` value
 });
 
-router.delete('/:category_id', (req, res) => {
+router.delete('/:id', (req, res) => {
   Category.destroy({
     where: {
-       category_id: req.params.category_id,
+       id: req.params.id,
     },
   })
     .then((deletedTag) => {

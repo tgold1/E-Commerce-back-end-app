@@ -78,22 +78,29 @@ router.post('/', async (req, res) => {
 // update product
 router.put('/:id', (req, res) => {
   // update product data
-  Product.update(
-    {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
-    },
+  Product.update(req.body,
+    //{id:
+     // product_name: "Basketball",
+     // price: 200.00,
+      //stock: 3,
+      //category_id: [1, 2, 3, 4]
+    //},
     {
       where: {
         id: req.params.id,
       },
     }
   )
+  .then((updateProduct) => {
+    res.json(updateProduct);
+  })
+  .catch ((err) => {
+    console.log(err);
+    res.json(err);
+  })
     .then((product) => {
       // find all associated tags from ProductTag
-      return ProductTag.findAll({ where: { product_id: req.params.id } });
+      return ProductTag.findAll({ where: { id: req.params.id } });
     })
     .then((productTags) => {
       // get list of current tag_ids
@@ -103,7 +110,7 @@ router.put('/:id', (req, res) => {
         .filter((tag_id) => !productTagIds.includes(tag_id))
         .map((tag_id) => {
           return {
-            product_id: req.params.id,
+            id: req.params.id,
             tag_id,
           };
         });
@@ -128,7 +135,7 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   Product.destroy({
     where: {
-      product_id: req.params.id,
+      id: req.params.id,
     },
   })
     .then((deletedProduct) => {
